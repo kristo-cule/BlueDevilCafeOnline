@@ -1,30 +1,31 @@
-const db = require("../models");
-const MenuToMenuItem = db.menutomenuitem;
+const db = require('../models');
+
+const MenuToMenuItems = db.menutomenuitems;
 
 exports.create = (req, res) => {
-  //vallidate
-  if (!req.body.title) {
+  // Validate Request
+  if (!req.body.menuId || !req.body.menuItemId) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: 'Ids can not be empty!',
     });
     return;
   }
 
-  //create relation
+  // Create relation
   const menutomenuitem = {
     menuId: req.body.menuId,
-    menuItemId: req.body.menuItemId
-  }
+    menuItemId: req.body.menuItemId,
+  };
 
-  //save relation to db
-  MenuToMenuItem.create(menutomenuitem)
-    .then(data => {
+  // Save relation in the database
+  MenuToMenuItems.create(menutomenuitem)
+    .then((data) => {
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the relation."
+          err.message || 'Some error occurred while creating the relation.',
       });
     });
-;}
+};
